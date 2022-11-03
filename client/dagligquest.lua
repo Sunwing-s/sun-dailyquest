@@ -2,23 +2,18 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local done = false
 local step1 = false
 local step2 = false
-local step3 = false
 local spawnLocations = 
 {
-    [1] = {x = 1282.0815, y = 4618.1147, z = 29.9538, h = 100.1},
-    [2] = {x = -153.7, y = 4509.78, z = 14.81, h = 60.1},
-    [3] = {x = 563.0507, y = 4201.1787, z = 7.9577, h = 80.1},
-    [4] = {x = -1541.5424, y = 3669.3003, z = 4.6053, h = 10.1},
-    [5] = {x = -1207.1727, y = 5322.7959, z = 22.9434, h = 37.5}
+    [1] = {x = -342.4532, y = 212.2995, z = 86.5769, h = 343.6060},
+    [2] = {x = -768.9590, y = -355.9228, z = 37.3333, h = 342.7794},
+    [3] = {x = -319.4562, y = -610.2422, z = 33.5582, h = 237.9600},
 }
 
 local quests =
 {
-    [1] = {name = "Boachgate Avlämnande", msg = "Nu så ska du göra en tjänst till mig, åk till Boachgate exakt postkod 300 och lämna detta paket till mig. Husets detaljer står på paketet, kom tillbaka hit efter, tack!", msg2 = "Tack så mycket! Gå nu tillbaka till Fernando så tror jag han vill prata klart med dig.", msg3 = "Tack för hjälpen att leverera det paketet!", item = "dailybox1", x = 1433.79, y = 3302.78, z = 9.02, ttext = "Lämna Paketet"},
-    [2] = {name = "Berchem Hjälpande", msg = "Jag behöver verkligen din hjälp, min farbror har tappat staven och skulle behöva en ny, kan du snälla ge denna till han? Jag betalar!", msg2 = "Tack så mycket! Gå nu tillbaka till Fernando och berräta om hur glad jag blev!", msg3 = "Tack så mycket för hjälpen!", item = "dailybox2", x = -1422.7155, y = 4837.2886, z = 25.4422, ttext = "Lämna Staven"}, 
-    [3] = {name = "Flygplats Räddningen", msg = "Jag har verkligen misslyckats, jag skulle lämna av en av mina kompisars väskor idag vid flygplatsen men glömde helt bort, kan du göra det?", msg2 = "Tack så mycket! Gå nu tillbaka till Fernando och säg att du räddade hans skuld!", msg3 = "Tack, du räddade mig verkligen!", item = "dailybox3", x = 2434.3086, y = 4532.1084, z = 6.0814, ttext = "Lämna Väskan"},
-    [4] = {name = "Sallads Sprinten", msg = "Min polare bad mig ta med sallad ner till little italy till hans nya pizzeria, men jag har inte tid. Kan du?", msg2 = "Tack så mycket! Gå nu tillbaka till Fernando och säg att du räddade hans skuld!", msg3 = "Tack, du räddade mig verkligen!", item = "dailybox4", x = -89.6355, y = 3847.5354, z = 13.0511, ttext = "Lämna Salladen"}, 
-    [5] = {name = "Krångligt Problem", msg = "Min polare sitter fast på taket i lägenhetshuset mellan Vauxite St och Exeter Ave. Kan du ta denna saxen och klippa loss honom?", msg2 = "Tack så mycket! Gå nu tillbaka till Fernando och säg att du räddade mig!", msg3 = "Tack, du räddade mig verkligen!", item = "dailybox5", x = -237.0664, y = 5381.9189, z = 44.8673, ttext = "Använd Saxen"}, 
+    [1] = {name = "Mirror Park Avlämnande", msg = "Nu så ska du göra en tjänst till mig, åk till utsidan av mirror park och lämna detta paket till mig. Husets detaljer står på paketet, kom tillbaka hit efter, tack!", msg2 = "Tack så mycket! Gå nu tillbaka till Fernando så tror jag han vill prata klart med dig.", msg3 = "Tack för hjälpen att leverera det paketet!", item = "dailybox1", x = 1264.6433, y = -703.0041, z = 64.9091, ttext = "Lämna Paketet"},
+    [2] = {name = "Hjälp på Piren", msg = "Jag behöver verkligen din hjälp, min farbror har tappat staven och skulle behöva en ny, kan du snälla ge denna till han? Jag betalar!", msg2 = "Tack så mycket! Gå nu tillbaka till Fernando och berräta om hur glad jag blev!", msg3 = "Tack så mycket för hjälpen!", item = "dailybox2", x = -1696.0883, y = -1120.6464, z = 13.1523, ttext = "Lämna Staven"}, 
+    [3] = {name = "Flygplats Räddningen", msg = "Jag har verkligen misslyckats, jag skulle lämna av en av mina kompisars väskor idag vid flygplatsen men glömde helt bort, kan du göra det?", msg2 = "Tack så mycket! Gå nu tillbaka till Fernando och säg att du räddade hans skuld!", msg3 = "Tack, du räddade mig verkligen!", item = "dailybox3", x = -1037.0527,  y = -2750.2988, z = 21.3593, ttext = "Lämna Väskan"},
 }
 
 function getRandom(variable)
@@ -27,6 +22,8 @@ end
 
 local coords = getRandom(spawnLocations)
 local quests = getRandom(quests)
+print(coords.x, coords.y, coords.z)
+print("Sun-Dailyquest // S16 Development")
 
 blip = AddBlipForCoord(coords.x, coords.y, coords.z) -- Blip ADD_BLIP_FOR_COORD(float x, float y, float z);
 SetBlipScale(blip, 0.6) -- void SET_BLIP_SCALE(Blip blip, float scale);
@@ -69,35 +66,28 @@ end)
 
 RegisterNetEvent("sun:dailymenu", function()
     if step1 then
-        exports['qb-menu']:openMenu({
-            {
-                header = 'Fernando',
-                icon = 'fas fa-fingerprint',
-                isMenuHeader = true, -- Set to true to make a nonclickable title
-            },
-            {
-                header = 'Dagens Äventyr: ' .. quests.name .. '!',
-                txt = 'Det låter kul!',
-                icon = 'fas fa-archive',
-                params = {
-                    event = 'sun:dailyquests',
-                    args = {
-		        message = 'Dagliga Quests'
+        if done then
+            QBCore.Functions.Notify("Du har redan hjälpt mig", "error")
+        else
+            exports['qb-menu']:openMenu({
+                {
+                    header = 'Fernando',
+                    icon = 'fas fa-fingerprint',
+                    isMenuHeader = true, -- Set to true to make a nonclickable title
+                }, 
+                {
+                    header = 'Avsluta Quest: ' .. quests.name .. '!',
+                    txt = 'Tack för att du gjorde det!',
+                    icon = 'fas fa-archive',
+                    params = {
+                        event = 'sun:dailyquests2',
+                        args = {
+		            message = 'Dagliga Quests'
+                        }
                     }
-                }
-            },  
-            {
-                header = 'Avsluta Quest: ' .. quests.name .. '!',
-                txt = 'Tack för att du gjorde det!',
-                icon = 'fas fa-archive',
-                params = {
-                    event = 'sun:dailyquests2',
-                    args = {
-		        message = 'Dagliga Quests'
-                    }
-                }
-            },
-        })
+                },
+            })
+        end
     else
         exports['qb-menu']:openMenu({
             {
@@ -121,13 +111,13 @@ RegisterNetEvent("sun:dailymenu", function()
 end)
 
 RegisterNetEvent("sun:dailyquests", function()
-    if done then
+    if step2 then
         QBCore.Functions.Notify("Du har redan pratat med mig idag", "error")
     else  
         QBCore.Functions.Notify(quests.msg, "success")
         --TriggerServerEvent("sun:questsitem", quests.item)
-        TriggerServerEvent('QBCore:Server:AddItem', quests.item, 1)
-        done = true
+        TriggerServerEvent('sun:daily:giveitem', quests.item)
+        --done = true
         if not DoesEntityExist(quest) then
 		    RequestModel("a_m_m_trampbeac_01")
 		    while not HasModelLoaded("a_m_m_trampbeac_01") do
@@ -155,26 +145,26 @@ end)
 
 RegisterNetEvent("sun:dailyquests1", function()
     if step2 then
-        QBCore.Functions.Notify("Jag vet inte om du kan hjälpa mig", "success")
+        QBCore.Functions.Notify("Jag vet inte om du kan hjälpa mig", "error")
     else
         step1 = true
+        step2 = true
         --TriggerServerEvent("sun:questsremoveitem", quests.item)
-        TriggerServerEvent('QBCore:Server:RemoveItem', quests.item, 1)
+        TriggerServerEvent('sun:daily:removeitem', quests.item)
         QBCore.Functions.Notify(quests.msg2, "success")
         --QBCore.Functions.Notify("Här får du en slant!", "success")
     end
 end)
 
 RegisterNetEvent("sun:dailyquests2", function()
-    if step3 == false then
+    if done == false then
         local reward = math.random(500, 2500)
         done = true
-        step1 = false
         step2 = true
-        step3 = true
         TriggerServerEvent("sun:daily:givemoney", reward)
         QBCore.Functions.Notify(quests.msg3, "success")
         QBCore.Functions.Notify("Du fick: ".. reward .. " i kontant!", "success")
     else
-        QBCore.Functions.Notify("Du har redan avslutat denna questm, vänta ett tag tills nästa", "success")
+        QBCore.Functions.Notify("Du har redan avslutat denna quest, vänta ett tag tills nästa", "success")
+    end
 end)
